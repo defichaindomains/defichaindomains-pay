@@ -8,26 +8,29 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head />
-      <title>Wallaby Pay</title>
+      <title>Defichain Domains Pay</title>
       <link rel="icon" href="/favicon.ico" />
       <meta name="viewport" content="width=device-width, user-scalable=no" />
       <meta name="theme-color" content="#ffffff" />
       <meta
         name="description"
-        content="Wallaby Pay - Send cryptocurrency to one another with ease."
+        content="Defichain Domains Pay - Send cryptocurrency to one another with ease."
       />
       <meta
         name="keywords"
-        content="Wallaby Pay, cryptocurrency, send cryptocurrency, digital payments"
+        content="Defichain Domains Pay, cryptocurrency, send cryptocurrency, digital payments"
       />
-      <meta name="author" content="Jarrod Watts" />
-      <meta name="og:title" content="Wallaby Pay" />
+      <meta name="author" content="Defichain Domains" />
+      <meta name="og:title" content="Defichain Domains Pay" />
       <meta
         name="og:description"
         content="A secure and user-friendly app for sending cryptocurrency."
       />
       <meta name="og:type" content="website" />
-      <meta name="og:url" content="https://www.wallabypay.com"></meta>
+      <meta
+        name="og:url"
+        content="https://www.pay.defichain-domains.com"
+      ></meta>
       <body>
         <Main />
         <NextScript />

@@ -31,22 +31,16 @@ export default function Login() {
             Let&rsquo;s get started.
           </h1>
           <p className="text-md lg:text-lg text-muted-foreground mt-6 mb-6 max-w-xl leading-normal text-center lg:text-start">
-            Wallaby Pay uses{" "}
+            Defichain Domains Pay Connects to your{" "}
             <Link
               className="underline"
               href="https://ethereum.org/en/wallets/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              wallets
+              wallet
             </Link>{" "}
             to send and receive funds.
-          </p>
-
-          <p className="text-md lg:text-lg text-muted-foreground mb-8 max-w-xl leading-normal text-center lg:text-start">
-            Don&rsquo;t have a wallet yet?
-            <br />
-            <strong>No problem.</strong> We&rsquo;ll set one up for you.
           </p>
 
           <Separator className="mb-4" />

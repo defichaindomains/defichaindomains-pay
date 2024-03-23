@@ -1,11 +1,11 @@
 <p align="center">
     <br />
     <a href="https://thirdweb.com">
-        <img src="./public/banner.png" width="1235" alt="Wallaby Pay Banner Image"/></a>
+        <img src="./public/banner.png" width="1235" alt="Defichain Domains Pay Banner Image"/></a>
     <br />
 </p>
 
-<h1 align="center">Wallaby Pay 🦘</h1>
+<h1 align="center">Defichain Domains Pay 🦘</h1>
 
 <p align="center">
    An open-source web3 product to help you build your own frontend web3 applications.
@@ -15,12 +15,12 @@
 
 ## What is this?
 
-Wallaby Pay is a simple web3 application that allows users to connect or create a wallet, and send funds to other users.
+Defichain Domains Pay is a simple web3 application that allows users to connect or create a wallet, and send funds to other users.
 It uses the [Polygon zkEVM](https://polygon.technology/polygon-zkevm) to allow for fast, cheap transactions between users, but works out of the box with any EVM-compatible blockchain!
 
 ## Features
 
-Wallaby Pay uses modern frontend tools and libraries to create a simple, yet powerful web3 application. It includes features such as:
+Defichain Domains Pay uses modern frontend tools and libraries to create a simple, yet powerful web3 application. It includes features such as:
 
 - Creating wallets for users by having them sign in with Google, Facebook, or Apple.
 - Transferring funds between users by looking up their Lens handle.
@@ -39,7 +39,7 @@ Under the hood, it is powered by the following tools:
 
 ## Get Started (Running Locally)
 
-To get Wallaby Pay running on your local machine, it's a simple 3-step process. You'll need to have [Node.js](https://nodejs.org/en/) installed on your machine first.
+To get Defichain Domains Pay running on your local machine, it's a simple 3-step process. You'll need to have [Node.js](https://nodejs.org/en/) installed on your machine first.
 
 #### 1. Clone the repo 🌞
 

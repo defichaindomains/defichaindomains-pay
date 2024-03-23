@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { ThirdwebProvider, useNetworkMismatch } from "@thirdweb-dev/react";
 import NextNProgress from "nextjs-progressbar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { production, LensProvider } from "@lens-protocol/react-web";
+// import { production, LensProvider } from "@lens-protocol/react-web";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { CHAIN, byoWalletOptions, createWalletOptions } from "@/const/config";
 import { useEffect, useState } from "react";
@@ -27,7 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
       {/* Here's our own React Query client. */}
       <QueryClientProvider client={queryClient}>
         {/* We're using some basic Lens features for reading and searching user's profiles */}
-        <LensProvider
+        {/* <LensProvider
           config={{
             // this sets the environment to production, which uses the mainnet contracts
             environment: production,
@@ -38,34 +38,34 @@ export default function App({ Component, pageProps }: AppProps) {
               getSigner: async () => null,
             },
           }}
-        >
-          {/* So here we're wrapping the app in this context from context/WalletOptionsContext.
+        > */}
+        {/* So here we're wrapping the app in this context from context/WalletOptionsContext.
               It's used to change what options appear in the Connect Wallet button (see further info above) */}
-          <WalletOptionsProvider
-            setWalletOptions={setWalletOptions}
-            walletOptions={walletOptions}
+        <WalletOptionsProvider
+          setWalletOptions={setWalletOptions}
+          walletOptions={walletOptions}
+        >
+          <ThirdwebProvider
+            // We set the app's main chain on the ThirdwebProvider defined in const/config.ts
+            activeChain={CHAIN}
+            // Grab a thirdweb client ID from thirdweb.com
+            clientId={process.env.NEXT_PUBLIC_THIRDWEB_KEY}
+            // Provide the same query client we initialized above so they share the same cache.
+            queryClient={queryClient}
+            supportedWallets={
+              // As you can see, we're basically saying - if the user clicked the "Connect" button, show all the wallets.
+              // If the user clicked the "Create" button, show only the Paper wallet, i.e. the Email signup flow.
+              walletOptions === "byo" ? byoWalletOptions : createWalletOptions
+            }
           >
-            <ThirdwebProvider
-              // We set the app's main chain on the ThirdwebProvider defined in const/config.ts
-              activeChain={CHAIN}
-              // Grab a thirdweb client ID from thirdweb.com
-              clientId={process.env.NEXT_PUBLIC_THIRDWEB_KEY}
-              // Provide the same query client we initialized above so they share the same cache.
-              queryClient={queryClient}
-              supportedWallets={
-                // As you can see, we're basically saying - if the user clicked the "Connect" button, show all the wallets.
-                // If the user clicked the "Create" button, show only the Paper wallet, i.e. the Email signup flow.
-                walletOptions === "byo" ? byoWalletOptions : createWalletOptions
-              }
-            >
-              {/* Show a loading bar and spinner at the top of the page on router changes. */}
-              <NextNProgress />
-              {/* This is used to overlay the Network dialog when the user is on the wrong chain.
+            {/* Show a loading bar and spinner at the top of the page on router changes. */}
+            <NextNProgress />
+            {/* This is used to overlay the Network dialog when the user is on the wrong chain.
                 We need information from a thirdweb react hook to do that, so we create a separate component. */}
-              <AppWrapper Component={Component} pageProps={pageProps} />
-            </ThirdwebProvider>
-          </WalletOptionsProvider>
-        </LensProvider>
+            <AppWrapper Component={Component} pageProps={pageProps} />
+          </ThirdwebProvider>
+        </WalletOptionsProvider>
+        {/* </LensProvider> */}
       </QueryClientProvider>
     </main>
   );

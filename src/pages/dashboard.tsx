@@ -10,7 +10,7 @@ import Image from "next/image";
 import useTransactionHistory from "@/hooks/useTransactionHistory";
 import formatNumber from "@/lib/numberFormatter";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useProfiles } from "@lens-protocol/react-web";
+// import { useProfiles } from "@lens-protocol/react-web";
 import { Card } from "@/components/ui/card";
 import { ArrowDownToLine, Send } from "lucide-react";
 import { useRouter } from "next/router";
@@ -34,12 +34,12 @@ export default function Dashboard() {
   } = useTransactionHistory(address);
 
   // Just for some nice UI, we can grab the user's Lens profile and show their name if they have one.
-  const { data: lensProfiles } = useProfiles({
-    where: {
-      // @ts-expect-error: Address might be undefined but it works fine
-      ownedBy: [address],
-    },
-  });
+  // const { data: lensProfiles } = useProfiles({
+  //   where: {
+  //     // @ts-expect-error: Address might be undefined but it works fine
+  //     ownedBy: [address],
+  //   },
+  // });
 
   // Load their balance in the native token. i.e. ETH on Ethereum, MATIC on Polygon, etc.
   const { data: nativeTokenBalance, isLoading: loadingNativeTokenBalance } =
@@ -64,7 +64,7 @@ export default function Dashboard() {
         <p className="leading-7 [&:not(:first-child)]:mt-6">
           Welcome back,{" "}
           <strong>
-            {lensProfiles?.[0]?.handle?.localName ?? address?.slice(0, 6)}
+            {/* {lensProfiles?.[0]?.handle?.localName ?? address?.slice(0, 6)} */}
           </strong>
           .
         </p>
@@ -78,13 +78,6 @@ export default function Dashboard() {
         <p className="w-full text-sm text-muted-foreground text-center lg:text-right">
           Available to spend.
         </p>
-        <Link
-          className="w-full text-sm text-center lg:text-right text-blue-500 bold underline"
-          href="https://faucet.polygon.technology/"
-          target="_blank"
-        >
-          Get free test funds!
-        </Link>
 
         {/* Card Section: Receive and Send */}
         <div className="w-full flex flex-row justify-center items-center gap-2 lg:gap-4 mt-6 lg:mt-12">
@@ -123,7 +116,7 @@ export default function Dashboard() {
         </div>
 
         {/* Transaction History Section */}
-        <h2 className="text-2xl font-semibold mt-16 mb-4">Recent Payments</h2>
+        {/* <h2 className="text-2xl font-semibold mt-16 mb-4">Recent Payments</h2>
         {!!transactionHistoryError && (
           <p className="text-sm text-red-500">
             Failed to load transaction history.
@@ -143,7 +136,7 @@ export default function Dashboard() {
               />
             ))}
           </div>
-        )}
+        )} */}
         {!loadingTransactionHistory && !transactionHistory?.length && (
           <p className="text-sm text-muted-foreground">
             No recent transactions.

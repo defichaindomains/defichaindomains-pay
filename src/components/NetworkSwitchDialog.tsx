@@ -32,21 +32,17 @@ export default function NetworkSwitchDialog({ isOpen }: Props) {
     <Dialog open={isOpen}>
       <DialogContent>
         <DialogHeader>
-          <div className="w-full flex flex-row items-center justify-center">
+          <div className="w-full flex flex-row items-center justify-center mb-4">
             <Image
-              src={"/wallaby-polygon.png"}
+              src={"/defichain-dfi-logo.png"}
               alt="Wallaby"
-              width={96}
-              height={96}
-              style={{
-                // flip the image
-                transform: "scaleX(-1)",
-              }}
+              width={45}
+              height={45}
             />
           </div>
           <DialogTitle>Switch to {CHAIN.name}</DialogTitle>
           <DialogDescription>
-            Wallaby Pay uses{" "}
+            Defichain Domains Pay uses{" "}
             <Link
               className="underline"
               href="https://ethereum.org/en/wallets/"
@@ -63,11 +59,11 @@ export default function NetworkSwitchDialog({ isOpen }: Props) {
             switchToActiveChain={true}
             welcomeScreen={{
               img: {
-                src: "ipfs://bafybeifr7hqrtwsjr7s33pivbppq73rpzdbval7xzdkt5mgg4c5ox4toye/wallaby-wallet.png",
+                src: "https://app.defichain-domains.com/static/media/Full-Logo_White.f9598476.svg",
                 width: 150,
-                height: 150,
+                height: 50,
               },
-              title: "Connect a wallet to use Wallaby Pay",
+              title: "Connect a wallet to use Defichain Domains Pay",
               subtitle:
                 "Wallets help you access your digital assets and sign in to web3 applications.",
             }}

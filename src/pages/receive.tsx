@@ -63,18 +63,10 @@ export default function ReceivePage() {
               )}
             </div>
 
-            <Link
-              className="w-full text-sm text-center lg:text-right text-blue-500 bold underline"
-              href="https://faucet.polygon.technology/"
-              target="_blank"
-            >
-              Get free test funds!
-            </Link>
-
             <Alert variant="destructive" className="mt-2">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle className="text-sm lg:text-md">
-                Wallaby Pay uses {CHAIN.name}.
+                Defichain Domains Pay uses {CHAIN.name}.
               </AlertTitle>
               <AlertDescription className="text-xs lg:text-sm">
                 Please ensure you send the native currency{" "}

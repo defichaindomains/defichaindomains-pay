@@ -18,7 +18,6 @@ import { CHAIN, explorerUrl } from "@/const/config";
 import { useRouter } from "next/router";
 import { useDebounce } from "use-debounce";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Profile, useSearchProfiles } from "@lens-protocol/react-web";
 import formatNumber from "@/lib/numberFormatter";
 import useSendPayment from "@/hooks/useSendPayment";
 import validateAddress from "@/lib/validateAddress";
@@ -37,7 +36,7 @@ const formPhases = [
       },
       {
         key: "lens",
-        title: "Lens Profile",
+        title: "Defichain Domains",
         icon: <Sprout />,
       },
     ],
@@ -93,12 +92,12 @@ export default function SendPage() {
   const [debouncedLensProfile] = useDebounce(lensProfileToPay, 1000);
 
   // Search for the lens profile the user has entered to find relevant profiles that match the query.
-  const { data: profiles } = useSearchProfiles({
-    query: debouncedLensProfile,
-  });
+  // const { data: profiles } = useSearchProfiles({
+  //   query: debouncedLensProfile,
+  // });
 
   // What lens profile did the user select to pay?
-  const [selectedLensProfile, setSelectedLensProfile] = useState<Profile>();
+  // const [selectedLensProfile, setSelectedLensProfile] = useState<Profile>();
 
   // How much are we sending?
   const [amountToPay, setAmountToPay] = useState<string>("");
@@ -245,7 +244,7 @@ export default function SendPage() {
                 <div className="w-full flex flex-col">
                   <Input
                     type="text"
-                    placeholder="Enter a Lens handle, e.g. jarrodwatts.lens"
+                    placeholder="Enter a Defichain Domains handle, e.g. stefano.dfi"
                     className={`w-full`}
                     value={lensProfileToPay}
                     onChange={(e) => {
@@ -256,18 +255,18 @@ export default function SendPage() {
               </div>
             </div>
 
-            <div className="w-full flex flex-col mt-8">
-              <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">
-                People
-              </h4>
+            {debouncedLensProfile &&
+              debouncedLensProfile === lensProfileToPay && (
+                <div className="w-full flex flex-col mt-8">
+                  <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">
+                    People
+                  </h4>
 
-              <Separator />
+                  <Separator />
 
-              {debouncedLensProfile &&
-                debouncedLensProfile === lensProfileToPay && (
                   <div className="w-full flex flex-col justify-center items-center gap-2 mt-4">
                     <div className="w-full flex flex-col gap-2">
-                      {profiles?.map((profile) => (
+                      {/* {profiles?.map((profile) => (
                         <Card
                           onClick={() => {
                             setAddressToPay(profile.ownedBy.address);
@@ -300,19 +299,20 @@ export default function SendPage() {
                             </p>
                           </div>
                         </Card>
-                      ))}
+                      ))} */}
                     </div>
                   </div>
-                )}
-
-              {debouncedLensProfile !== lensProfileToPay && (
-                <div className="w-full flex flex-col justify-center items-center gap-2 mt-4">
-                  {Array.from(Array(5).keys()).map((index) => (
-                    <Skeleton className="w-full h-12" key={index} />
-                  ))}
+                  <>
+                    {debouncedLensProfile !== lensProfileToPay && (
+                      <div className="w-full flex flex-col justify-center items-center gap-2 mt-4">
+                        {Array.from(Array(5).keys()).map((index) => (
+                          <Skeleton className="w-full h-12" key={index} />
+                        ))}
+                      </div>
+                    )}
+                  </>
                 </div>
               )}
-            </div>
           </>
         )}
 
@@ -424,7 +424,7 @@ export default function SendPage() {
                   <p className="text-xs lg:text-sm text-muted-foreground">to</p>
                   <p className="text-xs lg:text-md">{addressToPay}</p>
 
-                  {selectedLensProfile && (
+                  {/* {selectedLensProfile && (
                     <>
                       <p className="text-xs lg:text-sm text-muted-foreground">
                         the owner of Lens profile
@@ -436,7 +436,7 @@ export default function SendPage() {
                         }
                       </p>
                     </>
-                  )}
+                  )} */}
                 </div>
               </div>
 
