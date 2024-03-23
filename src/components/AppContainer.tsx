@@ -26,8 +26,8 @@ export default function AppContainer({ children }: Props) {
       style={{
         // Pretty gradients in the background.
         backgroundImage: `
-            radial-gradient(circle farthest-side at -15% 85%, rgba(90, 122, 255, .36), rgba(0, 0, 0, 0) 52%),
-            radial-gradient(circle farthest-side at 100% 30%, rgba(245, 40, 145, 0.25), rgba(0, 0, 0, 0) 30%)
+        radial-gradient(circle farthest-side at -15% 85%,rgba(0, 200, 150, .7), rgba(0, 0, 0, 0) 52%),
+        radial-gradient(circle farthest-side at 100% 30%,  rgba(190, 155, 250, 0.8),  rgba(0, 0, 0, 0) 30%)
           `,
       }}
     >

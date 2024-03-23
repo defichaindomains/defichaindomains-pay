@@ -2,7 +2,6 @@ import React from "react";
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import { Skeleton } from "./ui/skeleton";
 import { useWalletOptions } from "@/context/WalletOptionsContext";
-// import { useProfiles } from "@lens-protocol/react-web";
 
 /**
  * The wallet connection section for ensuring the user is in a connected state to the dApp.
@@ -25,12 +24,6 @@ import { useWalletOptions } from "@/context/WalletOptionsContext";
 export default function WalletConnectSection() {
   const address = useAddress();
   const { setWalletOptions } = useWalletOptions();
-  // const { data: lensProfiles, loading: loadingLensProfiles } = useProfiles({
-  //   where: {
-  //     // @ts-expect-error: Address might be undefined but it works fine
-  //     ownedBy: [address],
-  //   },
-  // });
 
   return (
     <div className="flex flex-col items-center justify-center rounded-xl shadow-xl h-auto w-full backdrop-blur-xl backdrop-filter bg-white bg-opacity-5 px-8 py-8">

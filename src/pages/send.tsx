@@ -21,6 +21,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import formatNumber from "@/lib/numberFormatter";
 import useSendPayment from "@/hooks/useSendPayment";
 import validateAddress from "@/lib/validateAddress";
+import useDomain from "@/hooks/useDomain";
 
 // Define the form phases we're going to use in the send page.
 const formPhases = [
@@ -32,12 +33,28 @@ const formPhases = [
       {
         key: "address",
         title: "Wallet Address",
-        icon: <BookUser />,
+        icon: (
+          <Image
+            src={"/book-user.svg"}
+            height={100}
+            width={100}
+            className="mb-4"
+            alt="Address Book"
+          />
+        ),
       },
       {
-        key: "lens",
+        key: "domains",
         title: "Defichain Domains",
-        icon: <Sprout />,
+        icon: (
+          <Image
+            src={"/Pictogram_Black.svg"}
+            height={100}
+            width={100}
+            className="mb-4"
+            alt="Defichain Domains Logo"
+          />
+        ),
       },
     ],
   },
@@ -58,12 +75,6 @@ const formPhases = [
   },
 ];
 
-/**
- * On this page, user's can find a Lens profile to pay, or enter a wallet address to pay.
- * They first select a wallet address, then enter an amount to pay, then confirm the payment.
- * It's a long file, you'd probably want to split it up into multiple components.
- * But for simplicity sake, we've kept it all in one file.
- */
 export default function SendPage() {
   // Get the currently conected wallet
   const address = useAddress();
@@ -76,7 +87,7 @@ export default function SendPage() {
 
   // What option did the user select to enter the address to pay? Lens or Wallet Address?
   const [enterAddressOption, setEnterAddressOption] = useState<
-    null | "address" | "lens"
+    null | "address" | "domains"
   >(null);
 
   // What is the wallet address we're sending funds to?
@@ -86,15 +97,14 @@ export default function SendPage() {
   const [addressToPayError, setAddressToPayError] = useState<string>("");
 
   // What has the user entered as the Lens address to pay?
-  const [lensProfileToPay, setLensProfileToPay] = useState<string>("");
+  const [domainToPay, setDomainToPay] = useState<string>("");
 
   // Debounce the lens profile to pay so we don't spam the API with requests.
-  const [debouncedLensProfile] = useDebounce(lensProfileToPay, 1000);
+  const [debouncedDomain] = useDebounce(domainToPay, 1000);
 
   // Search for the lens profile the user has entered to find relevant profiles that match the query.
-  // const { data: profiles } = useSearchProfiles({
-  //   query: debouncedLensProfile,
-  // });
+
+  const { resolvedAddress, loading, hasAvatar } = useDomain(debouncedDomain);
 
   // What lens profile did the user select to pay?
   // const [selectedLensProfile, setSelectedLensProfile] = useState<Profile>();
@@ -236,8 +246,8 @@ export default function SendPage() {
           </div>
         )}
 
-        {/* Phase 0 Option B: Lens Profile */}
-        {formPhase === 0 && enterAddressOption === "lens" && (
+        {/* Phase 0 Option B: Defichain Domains Profile */}
+        {formPhase === 0 && enterAddressOption === "domains" && (
           <>
             <div className="w-5/6 flex flex-col items-center justify-center">
               <div className="w-full flex flex-row justify-end items-start gap-2">
@@ -246,68 +256,69 @@ export default function SendPage() {
                     type="text"
                     placeholder="Enter a Defichain Domains handle, e.g. stefano.dfi"
                     className={`w-full`}
-                    value={lensProfileToPay}
+                    value={domainToPay}
                     onChange={(e) => {
-                      setLensProfileToPay(e.target.value);
+                      setDomainToPay(e.target.value);
                     }}
                   />
                 </div>
               </div>
             </div>
 
-            {debouncedLensProfile &&
-              debouncedLensProfile === lensProfileToPay && (
+            {debouncedDomain &&
+              debouncedDomain === domainToPay &&
+              domainToPay?.endsWith(".dfi") && (
                 <div className="w-full flex flex-col mt-8">
-                  <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">
-                    People
-                  </h4>
-
                   <Separator />
-
-                  <div className="w-full flex flex-col justify-center items-center gap-2 mt-4">
-                    <div className="w-full flex flex-col gap-2">
-                      {/* {profiles?.map((profile) => (
-                        <Card
-                          onClick={() => {
-                            setAddressToPay(profile.ownedBy.address);
-                            setSelectedLensProfile(profile);
-                            setFormPhase(formPhase + 1);
-                          }}
-                          key={profile.id}
-                          className="w-full flex flex-row items-center justify-start gap-2 py-2 px-3 hover:shadow-lg transition-shadow duration-200 ease-in-out cursor-pointer"
-                        >
-                          <MediaRenderer
-                            src={
-                              // @ts-expect-error: IDK why it doesn't like this
-                              profile?.metadata?.picture?.optimized?.uri ||
-                              `/profile.png`
-                            }
-                            style={{
-                              width: 32,
-                              height: 32,
-                            }}
-                            alt="Lens Profile Avatar"
-                            className="rounded-full"
-                          />
-
-                          <div className="flex flex-col items-start justify-center">
-                            <p className="text-sm lg:text-md font-semibold">
-                              {profile.handle?.suggestedFormatted.localName}
-                            </p>
-                            <p className="text-xs lg:text-sm text-muted-foreground">
-                              {profile.ownedBy.address}
-                            </p>
-                          </div>
-                        </Card>
-                      ))} */}
-                    </div>
-                  </div>
                   <>
-                    {debouncedLensProfile !== lensProfileToPay && (
+                    {loading ? (
                       <div className="w-full flex flex-col justify-center items-center gap-2 mt-4">
-                        {Array.from(Array(5).keys()).map((index) => (
+                        {Array.from(Array(1).keys()).map((index) => (
                           <Skeleton className="w-full h-12" key={index} />
                         ))}
+                      </div>
+                    ) : !resolvedAddress ? (
+                      <div className="w-full flex flex-col justify-center items-center gap-2 mt-4">
+                        <div className="w-full flex flex-col gap-2">
+                          {`The Domain doesn't exist`}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="w-full flex flex-col justify-center items-center gap-2 mt-4">
+                        <div className="w-full flex flex-col gap-2">
+                          <Card
+                            onClick={() => {
+                              if (resolvedAddress) {
+                                setAddressToPay(resolvedAddress);
+                                setFormPhase(formPhase + 1);
+                              }
+                            }}
+                            className="w-full flex flex-row items-center justify-start gap-2 py-2 px-3 hover:shadow-lg transition-shadow duration-200 ease-in-out cursor-pointer"
+                          >
+                            <MediaRenderer
+                              src={
+                                hasAvatar
+                                  ? `https://${domainToPay}.im/avatar`
+                                  : `/profile.png`
+                              }
+                              style={{
+                                width: 32,
+                                height: 32,
+                              }}
+                              alt="Lens Profile Avatar"
+                              className="rounded-full"
+                            />
+
+                            <div className="flex flex-col items-start justify-center">
+                              <p className="text-sm lg:text-md font-semibold">
+                                {domainToPay}
+                              </p>
+                              <p className="text-xs lg:text-sm text-muted-foreground">
+                                {resolvedAddress}
+                              </p>
+                            </div>
+                          </Card>
+                        </div>
                       </div>
                     )}
                   </>
@@ -353,10 +364,12 @@ export default function SendPage() {
                     <p className="text-sm font-semibold gap-2">Your balance:</p>
                     <p className="text-sm">
                       {loadingNativeTokenBalance && "Loading..."}
-
                       {!loadingNativeTokenBalance &&
                         nativeTokenBalance &&
-                        formatNumber(Number(nativeTokenBalance.displayValue))}
+                        formatNumber(
+                          Number(nativeTokenBalance.displayValue)
+                        )}{" "}
+                      {nativeTokenBalance?.symbol}
                     </p>
                   </div>
                 </div>
@@ -405,11 +418,11 @@ export default function SendPage() {
             <div className="w-full flex flex-col justify-end items-start gap-2">
               <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start rounded-xl shadow-xl h-auto w-full backdrop-blur-xl backdrop-filter bg-white bg-opacity-5 px-8 py-8 mb-4">
                 <Image
-                  src={`/wallaby-money.png`}
+                  src={`/hand-coin.svg`}
                   width={128}
                   height={128}
                   quality={100}
-                  alt="Wallaby"
+                  alt="Hand Coin"
                 />
 
                 <div className="flex flex-col items-start justify-center ml-4 gap-1">
@@ -422,21 +435,8 @@ export default function SendPage() {
                   </p>
 
                   <p className="text-xs lg:text-sm text-muted-foreground">to</p>
+                  <p className="text-xs lg:text-md">{domainToPay}</p>
                   <p className="text-xs lg:text-md">{addressToPay}</p>
-
-                  {/* {selectedLensProfile && (
-                    <>
-                      <p className="text-xs lg:text-sm text-muted-foreground">
-                        the owner of Lens profile
-                      </p>
-                      <p className="text-xs lg:text-md">
-                        {
-                          selectedLensProfile?.handle?.suggestedFormatted
-                            .localName
-                        }
-                      </p>
-                    </>
-                  )} */}
                 </div>
               </div>
 
@@ -480,22 +480,13 @@ export default function SendPage() {
             <div className="w-full flex flex-col items-center gap-2 ">
               {isSendingPayment && (
                 <>
-                  <div className="relative">
-                    <Image
-                      src={`/lol.gif`}
-                      fill
-                      alt="Flying effect gif"
-                      className="opacity-50 rounded-xl"
-                    />
-                  </div>
-
+                  <p className="text-6xl mb-8">🚀</p>
                   <Image
-                    src={`/wallaby-flying.png`}
-                    width={300}
-                    height={300}
-                    quality={100}
-                    alt="Wallaby Cape"
-                    className="z-10"
+                    src={`/three-dots.svg`}
+                    height={30}
+                    width={120}
+                    alt="Flying effect gif"
+                    className="opacity-50 rounded-xl"
                   />
                 </>
               )}
@@ -503,11 +494,11 @@ export default function SendPage() {
               {!paymentError && paymentTransaction && (
                 <>
                   <Image
-                    src={`/wallaby-success.png`}
+                    src={`/badge-check.svg`}
                     width={300}
                     height={300}
                     quality={100}
-                    alt="Wallaby Success"
+                    alt="Success"
                     className="z-10"
                   />
 
@@ -536,11 +527,11 @@ export default function SendPage() {
               {!!paymentError && (
                 <>
                   <Image
-                    src={`/wallaby-failure.png`}
+                    src={`/badge-error.svg`}
                     width={300}
                     height={300}
                     quality={100}
-                    alt="Wallaby Error"
+                    alt="Error"
                     className="z-10"
                   />
 

@@ -35,7 +35,7 @@ export default function NetworkSwitchDialog({ isOpen }: Props) {
           <div className="w-full flex flex-row items-center justify-center mb-4">
             <Image
               src={"/defichain-dfi-logo.png"}
-              alt="Wallaby"
+              alt="Defichain"
               width={45}
               height={45}
             />

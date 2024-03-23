@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import { ThirdwebProvider, useNetworkMismatch } from "@thirdweb-dev/react";
 import NextNProgress from "nextjs-progressbar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-// import { production, LensProvider } from "@lens-protocol/react-web";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { CHAIN, byoWalletOptions, createWalletOptions } from "@/const/config";
 import { useEffect, useState } from "react";
@@ -26,19 +25,6 @@ export default function App({ Component, pageProps }: AppProps) {
     <main className={`${inter.className}`}>
       {/* Here's our own React Query client. */}
       <QueryClientProvider client={queryClient}>
-        {/* We're using some basic Lens features for reading and searching user's profiles */}
-        {/* <LensProvider
-          config={{
-            // this sets the environment to production, which uses the mainnet contracts
-            environment: production,
-            bindings: {
-              // Use the default RPC coming from the CHAIN object in const/config.ts
-              getProvider: async () => new JsonRpcProvider(CHAIN.rpc[0]),
-              // @ts-expect-error: We're only doing read-only stuff, should ideally never hit this. If it does, it will error.
-              getSigner: async () => null,
-            },
-          }}
-        > */}
         {/* So here we're wrapping the app in this context from context/WalletOptionsContext.
               It's used to change what options appear in the Connect Wallet button (see further info above) */}
         <WalletOptionsProvider

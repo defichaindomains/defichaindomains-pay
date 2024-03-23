@@ -2,30 +2,39 @@ import {
   NATIVE_TOKEN_ADDRESS,
   useAddress,
   useBalance,
+  useSDK,
 } from "@thirdweb-dev/react";
 import AppContainer from "@/components/AppContainer";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/router";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { CHAIN } from "@/const/config";
+import {
+  CHAIN,
+  resolverAbi,
+  resolverAddress,
+  reverseRegistrarAbi,
+  reverseRegistrarAddress,
+} from "@/const/config";
 import { useQRCode } from "next-qrcode";
 import WalletConnectSection from "@/components/WalletConnectSection";
 import formatNumber from "@/lib/numberFormatter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { useEffect, useState } from "react";
+import useResolveAddress from "@/hooks/useResolveAddress";
 
 /**
  * This is where the user's can see their wallet address so they can send funds to it.
  * It takes the address from the useAddress hook and displays it in multiple ways: as a QR code, as text, and as a button to copy it to the clipboard.
  */
 export default function ReceivePage() {
-  // Grab the connected wallet address.
+  // Useful to send user's to the /send and /receive pages.
+  const router = useRouter();
+  // Grab the currently connected wallet address.
   const address = useAddress();
 
-  // Useful to send user's to the /dashboard page.
-  const router = useRouter();
+  const { domainName, loading } = useResolveAddress(address);
 
   // We're using the next-qrcode library to generate the QR code of the wallet address
   const { Canvas } = useQRCode();
@@ -63,18 +72,6 @@ export default function ReceivePage() {
               )}
             </div>
 
-            <Alert variant="destructive" className="mt-2">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle className="text-sm lg:text-md">
-                Defichain Domains Pay uses {CHAIN.name}.
-              </AlertTitle>
-              <AlertDescription className="text-xs lg:text-sm">
-                Please ensure you send the native currency{" "}
-                <strong>{CHAIN.nativeCurrency.symbol}</strong> on the{" "}
-                <strong>{CHAIN.name}</strong> network.
-              </AlertDescription>
-            </Alert>
-
             <Separator className="mt-4" />
 
             {/* QR Code: Desktop */}
@@ -97,6 +94,26 @@ export default function ReceivePage() {
               />
             </div>
 
+            {/* Text displaying the resolved domain */}
+
+            {loading ? (
+              <Skeleton className="w-full h-12" />
+            ) : domainName ? (
+              <p className="text-sm lg:text-lg text-muted-foreground max-w-xl leading-normal text-center mt-4">
+                Your Defichain Domain: <br />
+                <strong>{domainName}</strong>
+              </p>
+            ) : (
+              <Alert variant="default" className="mt-2">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle className="text-sm lg:text-md">
+                  No Defichain Domain found
+                </AlertTitle>
+                <AlertDescription className="text-xs lg:text-sm">
+                  {`We couldn't resolve your address to any Defichain Domains. If you own one, you need to set your the reverse record in the Defichain Domains Manager app.`}
+                </AlertDescription>
+              </Alert>
+            )}
             {/* Text displaying wallet address */}
             <p className="text-sm lg:text-lg text-muted-foreground max-w-xl leading-normal text-center mt-4">
               Your Wallet Address: <strong>{address}</strong>

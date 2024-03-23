@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { BigNumber } from "ethers";
 
 const useDomain = (domainName: string) => {
-  const [resolvedAddress, setResolvedAddress] = useState<any[] | null>([]);
+  const [resolvedAddress, setResolvedAddress] = useState<string | null>();
   const [loading, setLoading] = useState<boolean>(false);
-  const networkEnv = process.env.NEXT_PUBLIC_NETWORK;
+  const [hasAvatar, setHasAvatar] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
@@ -14,9 +14,12 @@ const useDomain = (domainName: string) => {
           query: `
             query GetDomainByName($name: String!) {
               domains(where: { name: $name }) {
+                resolver {
                 addr {
                   id
                 }
+                texts
+              }
               }
             }
           `,
@@ -37,21 +40,28 @@ const useDomain = (domainName: string) => {
         );
         const { data } = await graphqlResponse.json();
 
-        if (data.domoins[0]) {
-          const address = 
+        if (data.domains[0]) {
+          const domainData = data.domains[0];
+          const address = domainData.resolver.addr.id;
+          setResolvedAddress(address);
+          const hasAvatarText =
+            domainData.resolver.texts &&
+            domainData.resolver.texts.includes("avatar");
+          setHasAvatar(hasAvatarText);
+        } else {
+          setResolvedAddress(null);
+          setHasAvatar(false);
         }
-       
-        setResolvedAddress(nfts);
       } catch (error) {
-        console.error("Error fetching nfts:", error);
+        console.error("Error fetching domains:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchNFTs();
-  }, [networkEnv, collectionAddress]);
-  return { nfts, loading };
+    fetchDomain();
+  }, [domainName]);
+  return { resolvedAddress, loading, hasAvatar };
 };
 
 export default useDomain;

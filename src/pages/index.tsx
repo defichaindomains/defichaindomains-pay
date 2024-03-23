@@ -1,7 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import styles from "../styles/Landing.module.css";
 import Link from "next/link";
 import AppContainer from "@/components/AppContainer";
 
@@ -28,18 +27,27 @@ export default function Home() {
                 Get Started
               </Button>
             </Link>
+            <Link
+              href="https://github.com/defichaindomains/defichaindomains-pay"
+              target="_blank"
+            >
+              <Button
+                className="w-full lg:w-48 h-14 text-lg font-semibold"
+                variant={"outline"}
+              >
+                GitHub
+              </Button>
+            </Link>
           </div>
         </div>
-        <div className={styles.bounceOnHover}>
-          <Image
-            src="/wallaby.png"
-            width={720}
-            height={720}
-            quality={100}
-            alt="Wallaby"
-            className="invisible lg:-mt-72 lg:visible"
-          />
-        </div>
+        <Image
+          src="/Full-Logo_Black.svg"
+          width={400}
+          height={400}
+          quality={100}
+          alt="Defichain Domains"
+          className="invisible lg:-mt-72 lg:visible"
+        />
       </div>
     </AppContainer>
   );

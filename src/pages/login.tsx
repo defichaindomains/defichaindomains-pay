@@ -50,11 +50,11 @@ export default function Login() {
 
         <div>
           <Image
-            src="/wallaby-wallet.png"
-            width={500}
-            height={500}
+            src="/wallet.svg"
+            width={400}
+            height={400}
             quality={100}
-            alt="Wallaby"
+            alt="Wallet"
             className="invisible h-48 lg:-mt-72 lg:visible lg:h-auto"
           />
         </div>
